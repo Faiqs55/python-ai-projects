@@ -31,7 +31,7 @@ async def search_web(query: str) -> dict | None:
 
 async def fetch_url(url: str):
   async with httpx.AsyncClient() as client:
-    res = await client.post(url, timeout=30.0)
+    res = await client.get(url, timeout=30.0)
     cleanRes = htmlToText(res.text)
     return cleanRes
 
@@ -75,3 +75,10 @@ async def getDocs(query: str, library: str):
       labeled = f"SOURCE: {link}\n{raw}"
       text_parts.append(labeled)
     return "\n\n".join(text_parts)
+
+
+def main():
+  mcp.run(transport="stdio")
+
+if __name__ == "__main__":
+  main()

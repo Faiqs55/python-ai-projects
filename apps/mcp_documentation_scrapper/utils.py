@@ -1,4 +1,6 @@
 import trafilatura
+from groq import Groq
+import os
 
 def htmlToText(html):
     try:
@@ -14,3 +16,17 @@ def htmlToText(html):
 
     except Exception as e:
         raise e
+
+
+def get_response_from_llm(user_prompt, system_prompt, model):
+    api_key = os.getenv("GROQ_API_KEY")
+
+    groq_client = Groq(api_key=api_key)
+    chat_completion = groq_client.chat.completions.create(
+            messages=[
+                {"role": "system", "content": system_prompt},
+                {"role": "user", "content": user_prompt},
+            ],
+            model=model,
+        )
+    return chat_completion.choices[0].message.content
